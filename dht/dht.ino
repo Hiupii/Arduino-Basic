@@ -4,7 +4,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #include "DHT.h" //khai báo thư viện DHT
 
 const int DHTPIN = 7;  //khai báo chân dữ liệu DHT
-const int DHTTYPE = DHT11; //khai báo kiểu DHT, có 3 loại DHT11, DHT21, DHT22 tùy kết quả có thể thay loại 
+const int DHTTYPE = DHT22; //khai báo kiểu DHT, có 3 loại DHT11, DHT21, DHT22 tùy kết quả có thể thay loại 
 
 DHT dht(DHTPIN, DHTTYPE);
 
