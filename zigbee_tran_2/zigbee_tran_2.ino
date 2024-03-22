@@ -29,5 +29,5 @@ void loop() {
   mySerial.println("Group: " + String(group));
   mySerial.println("Nhiet do: " + String(temp));
   mySerial.println("Do am: " + String(hum));
-  delay(2000);
+  delay(5000);
 }
