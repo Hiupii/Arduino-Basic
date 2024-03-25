@@ -7,8 +7,9 @@ SoftwareSerial mySerial(10, 11);
 int red = 5;
 int green = 6;
 int blue = 7;
+int yeallow = 9;
 
-int led;
+int led = 0;
 
 void setup() {
   Serial.begin(38400);
@@ -19,6 +20,7 @@ void setup() {
   pinMode(red, OUTPUT);
   pinMode(green, OUTPUT);
   pinMode(blue, OUTPUT);
+  pinMode(yeallow, OUTPUT);
 }
 
 void loop() {
@@ -31,14 +33,22 @@ void loop() {
     if(data == "Group: 1")
     {
       led = red;
+      Serial.println(data);
     }
     else if(data == "Group: 2")
     {
       led = green;
+      Serial.println(data);
     }
     else if(data == "Group: 3")
     {
       led = blue;
+      Serial.println(data);
+    }
+    else if(data == "Group: 4")
+    {                                                                          
+      led = yeallow;
+      Serial.println(data);
     }
 
     if(checkstr == "Nh")
@@ -51,10 +61,15 @@ void loop() {
       lcd.setCursor(0,1); 
       lcd.print(data + " ");
     }
+    else if(checkstr == "Gr")
+    {
+      lcd.setCursor(13,1);
+      lcd.print("N" + data.substring(7,8));
+    }
     else
     {
       lcd.setCursor(0,0);
-      lcd.print("Gia tri: ");
+      lcd.print("Gia tri:  ");
       lcd.print(data);
       lcd.setCursor(0,1);
       if(data.toInt() >= 500)
@@ -72,7 +87,10 @@ void loop() {
   }
   else
   {
-    delay(500);
-    digitalWrite(led, LOW);
+    delay(1000);
+    digitalWrite(red, LOW);
+    digitalWrite(green, LOW);
+    digitalWrite(blue, LOW);
+    digitalWrite(yeallow, LOW);
   }
 }
