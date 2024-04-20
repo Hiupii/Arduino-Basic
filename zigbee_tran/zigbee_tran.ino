@@ -9,13 +9,23 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(38400);
   mySerial.begin(38400);
-  pinMode(A1, INPUT);
+  pinMode(8, OUTPUT);
 }
 
 void loop() {
-  float gas = analogRead(A1);
-
-  // doc[""]
-  mySerial.println(String(gas));
-  delay(2000);
+  if(mySerial.available())
+  {
+    String data = mySerial.readStringUntil('\n');
+    data.remove(data.length()-1);
+    if(data == "on")
+    {
+      digitalWrite(8, HIGH);
+      Serial.println("Led on");
+    }
+    if(data == "off")
+    {
+      digitalWrite(8, LOW);
+      Serial.println("Led off");
+    }
+  }
 }

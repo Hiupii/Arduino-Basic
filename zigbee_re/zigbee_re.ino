@@ -11,44 +11,54 @@ int yeallow = 9;
 
 int led = 0;
 
+int status = 0;
+
+unsigned long currentTime = 0;
+
 void setup() {
   Serial.begin(38400);
+  Serial.println("begin");
   mySerial.begin(38400);
-  pinMode(8, OUTPUT);
   lcd.init();
   lcd.backlight();
   pinMode(red, OUTPUT);
   pinMode(green, OUTPUT);
   pinMode(blue, OUTPUT);
   pinMode(yeallow, OUTPUT);
+  pinMode(8, INPUT_PULLUP);
+
 }
 
 void loop() {
+
+  //Zigbee
   if (mySerial.available()) {
     String data = mySerial.readStringUntil('\n'); //
     data.remove(data.length() - 1);
+
+    //Serial.println(data);
 
     String checkstr = data.substring(0, 2);
 
     if(data == "Group: 1")
     {
       led = red;
-      Serial.println(data);
+      //Serial.println(data);
     }
     else if(data == "Group: 2")
     {
       led = green;
-      Serial.println(data);
+      //Serial.println(data);
     }
     else if(data == "Group: 3")
     {
       led = blue;
-      Serial.println(data);
+      //Serial.println(data);
     }
     else if(data == "Group: 4")
     {                                                                          
       led = yeallow;
-      Serial.println(data);
+      //Serial.println(data);
     }
 
     if(checkstr == "Nh")
@@ -66,23 +76,6 @@ void loop() {
       lcd.setCursor(13,1);
       lcd.print("N" + data.substring(7,8));
     }
-    else
-    {
-      lcd.setCursor(0,0);
-      lcd.print("Gia tri:  ");
-      lcd.print(data);
-      lcd.setCursor(0,1);
-      if(data.toInt() >= 500)
-      {
-        lcd.print("Nguy hiem");
-        digitalWrite(8, HIGH);
-      }
-      else
-      {
-        lcd.print("An toan   ");
-        digitalWrite(8, LOW);
-      }
-    }
     digitalWrite(led, HIGH);
   }
   else
@@ -92,5 +85,25 @@ void loop() {
     digitalWrite(green, LOW);
     digitalWrite(blue, LOW);
     digitalWrite(yeallow, LOW);
+  }
+
+  if(digitalRead(8) == LOW)
+  {
+    delay(50);
+    if(digitalRead(8) == LOW)
+    {
+      if(status == 0)
+      {
+        status = 1;
+        mySerial.println("on");
+        Serial.println("on");
+      }
+      else
+      {
+        status = 0;
+        mySerial.println("off");
+        Serial.println("off");
+      }
+    }
   }
 }

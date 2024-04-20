@@ -1,16 +1,13 @@
 #include<SoftwareSerial.h>
-#include<ArduinoJson.h>
 
 #include<DHT.h>
 
 #define DHTPIN 8
-#define DHTTYPE 11
+#define DHTTYPE 22
 
 DHT dht(DHTPIN, DHTTYPE);
 
-StaticJsonDocument<100> doc;
-
-int group = 2;
+int group = 3;
 
 SoftwareSerial mySerial(10, 11); //Rx, Tx
 
@@ -19,15 +16,18 @@ void setup() {
   Serial.begin(38400);
   mySerial.begin(38400);
   dht.begin();
+  Serial.println("begin");
 }
 
 void loop() {
   float temp = dht.readTemperature();
   float hum = dht.readHumidity();
+  Serial.println("loop");
 
-  // doc[""]
   mySerial.println("Group: " + String(group));
+  Serial.println(temp);
   mySerial.println("Nhiet do: " + String(temp));
+  Serial.println(hum);
   mySerial.println("Do am: " + String(hum));
   delay(2000);
 }
